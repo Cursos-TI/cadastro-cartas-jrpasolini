@@ -12,16 +12,16 @@ printf("Vamos iniciar nosso jogo de Super Trunfo!\nPara isso, iremos coletar dad
 char estado1[3] = "a67", estado2[3] = "b67";     // utilizei um array de 3 caracteres para garantir que a sigla do estado caiba na variavel
 char codigo1[4] = "A97", codigo2[4] = "A96";         //aqui utilizei um array de 3 caracteres devido ao codigo da carta ser uma letra + 2 numreos.  
 char cidade1[50] = "vilax", cidade2[50] = "vilay";     //Mesmo tamanho do array para não ter problemas com o tamanho do nome da cidade.
-int populacao1 = 12323, populacao2 = 11122;         //populacao do estado em valor inteiro para as 2 cidades
+unsigned long int populacao1 = 12323, populacao2 = 11122;         //populacao do estado em valor inteiro para as 2 cidades. Utlizado unsigned para dobrar capacidade posto que não há valor negaativo para a entrada desse tipo de dado
 float areacidade1 = 1, areacidade2 = 1, PIB1 = 1, PIB2 = 1, densidade1, densidade2, pibpercapita1, pibpercapita2;                //usando float para armazenar em buffer numeros com casas decimais
-int pontosturisticos1 = 1, pontosturisticos2 = 1; //entrada de pontos turisticos como valor inteiro
+short int pontosturisticos1 = 33, pontosturisticos2 = 1; //entrada de pontos turisticos como valor inteiro. utilizei short int para economizar espaço de memória e colocar em pratica o uso desse tipo de dado que ocupa apenas 2 bytes de memória.
 
  // Área para entrada de dados
 
 printf("Carta 1 - Informe a sigla do estado: ");
-scanf("%s", &estado1);
+scanf("%2s", estado1);
 printf("Informe o codigo da carta (uma letra + 2 numeros): ");
-scanf("%3s", &codigo1);
+scanf("%3s", codigo1);
 printf("Informe o nome da cidade: ");
 getchar();
     fgets(cidade1, 50, stdin);
@@ -32,15 +32,15 @@ scanf("%f", &areacidade1);
 printf("Informe o PIB da cidade (em R$ bilhões): ");
 scanf("%f", &PIB1);
 printf("Informe a quantidade de pontos turisticos da cidade: ");
-scanf("%d", &pontosturisticos1);
+scanf("%hd", &pontosturisticos1); // aqui a entrada para o short int usa o especificador %hd para garantir a correta leitura do valor
 
 /* Aqui começamos com os dados da carta 2*/
 
 printf("Ótimo! Agora vamos para os dados da segunda carta.\n");
 printf("Carta 2 - Informe a sigla do estado: ");
-scanf("%s", &estado2);
+scanf("%2s", estado2);
 printf("Informe o codigo da carta (uma letra + 2 numeros): ");
-scanf("%3s", &codigo2);
+scanf("%3s", codigo2);
 printf("Informe o nome da cidade: ");
 getchar();
     fgets(cidade2, 50, stdin);
@@ -51,10 +51,10 @@ scanf("%f", &areacidade2);
 printf("Informe o PIB da cidade (em R$ bilhões): ");
 scanf("%f", &PIB2);
 printf("Informe a quantidade de pontos turisticos da cidade: ");
-scanf("%d", &pontosturisticos2);
+scanf("%hd", &pontosturisticos2);
 printf("Muito bem! Agora que temos os dados das 2 cartas, vamos exibi-las para conferência: \n\n\n\n");
-printf("Carta 1 - Estado: %s | Codigo: %s | Cidade: %s | Populacao: %d habitantes | Area: %.1f km² | PIB da cidade: R$ %.2f bilhões | Pontos Turisticos: %d\n", estado1, codigo1, cidade1, populacao1, areacidade1, PIB1, pontosturisticos1);
-printf("Carta 2 - Estado: %s | Codigo: %s | Cidade: %s | Populacao: %d habitantes | Area: %.1f km² | PIB da cidade: R$ %.2f bilhões | Pontos Turisticos: %d\n", estado2, codigo2, cidade2, populacao2, areacidade2, PIB2, pontosturisticos2);
+printf("Carta 1 - Estado: %s | Codigo: %s | Cidade: %s | Populacao: %d habitantes | Area: %.1f km² | PIB da cidade: R$ %.2f bilhões | Pontos Turisticos: %hd\n", estado1, codigo1, cidade1, populacao1, areacidade1, PIB1, pontosturisticos1);
+printf("Carta 2 - Estado: %s | Codigo: %s | Cidade: %s | Populacao: %d habitantes | Area: %.1f km² | PIB da cidade: R$ %.2f bilhões | Pontos Turisticos: %hd\n", estado2, codigo2, cidade2, populacao2, areacidade2, PIB2, pontosturisticos2);
 
 
 /* Aqui calculamos a densidade populacional e o PIB per capita das 2 cidades */
@@ -69,6 +69,21 @@ printf("Densidade Populacional - %s: %.2f habitantes/km²\n", cidade1, densidade
 printf("Densidade Populacional - %s: %.2f habitantes/km²\n", cidade2, densidade2);
 printf("PIB per Capita - %s: R$ %.2f\n", cidade1, pibpercapita1 * 10000000); //multiplicando por 10 milhões para aumentar a escala e corrigir a apresentação do numero
 printf("PIB per Capita - %s: R$ %.2f\n", cidade2, pibpercapita2 * 10000000);
+
+/* aqui começamos os calculos dos resultados de cada uma das cartas conforme proposto no desafio nível mestre */
+float superpoder1, superpoder2; // declarando variavel para os superpoderes das cartas. Invertendo o valor da densidade populacional conforme solicitado pelo professor
+superpoder1 = populacao1 + areacidade1 + (short int)pontosturisticos1 + PIB1 + (1/ densidade1);
+superpoder2 = populacao2 + areacidade2 + (short int)pontosturisticos2 + PIB2 + (1/ densidade2);
+
+/* Abaixo vamos apresentar essa saíde de dados comparando os resultados entre as cartas*/
+printf ("Os superpoderes das cartas são: %s / %s: %.2f e %s / %s: %.2f\n", cidade1, estado1, superpoder1, cidade2, estado2, superpoder2);  
+printf("Resultado do vencedor na comparação das cartas: Se o resultado for 1, %s vence. Se for 0, a %s vence.\n", cidade1, cidade2);
+printf("A População de %s venceu? %d\n", cidade1, (populacao1 > populacao2));
+printf("Area total de %s venceu? %d\n", cidade1, (areacidade1 > areacidade2));
+printf("Pontos Turisticos de %s venceu? %d\n", cidade1, (pontosturisticos1 > pontosturisticos2));
+printf("PIB da cidade de %s venceu? %d\n", cidade1, (PIB1 > PIB2));
+printf("Densidade Populacional (menor é melhor) da %s venceu? %d\n", cidade2, (densidade1 < densidade2));
+printf("Super Poder de %s venceu? %d\n", cidade1, (superpoder1 > superpoder2));
 
 return 0; // aqui terminamos o programa.
 }
